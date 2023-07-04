@@ -1,23 +1,42 @@
 import {Component, OnInit} from '@angular/core';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
+import {
+  OidcClientNotification,
+  OidcSecurityService,
+  OpenIdConfiguration,
+  UserDataResult
+} from 'angular-auth-oidc-client';
+import {delay, filter, Observable} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
-  constructor(public oidcSecurityService: OidcSecurityService) {
+
+  authenticated = this.oidcSecurityService.isAuthenticated$;
+  userData = this.oidcSecurityService.userData$;
+
+  constructor(private router: Router,
+              private oidcSecurityService: OidcSecurityService,
+              private snackBar: MatSnackBar) {
+    console.log('in constructor')
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    console.log('in init')
+  }
+
+  logoffAndRevokeTokens() {
     this.oidcSecurityService
-      .checkAuth()
-      .subscribe(({isAuthenticated, userData, accessToken, idToken}) => {
-        console.log('app authenticated', isAuthenticated);
-        console.log(`Current access token is '${accessToken}'`);
-        console.log(`Current id token is '${idToken}'`);
-        localStorage.setItem('guiAccessToken', accessToken);
-        localStorage.setItem('guiIdToken', idToken);
+      .logoffAndRevokeTokens()
+      .subscribe((result) => {
+        // Go to /home if logged in
+        this.snackBar.open('Successfully logged out', undefined, {duration: 5000});
+        this.router.navigate(['/home']);
+        console.log(result)
       });
   }
 

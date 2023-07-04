@@ -4,33 +4,34 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {AuthConfigModule} from './auth/auth-config.module';
 import {CommonModule} from "@angular/common";
-import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./service/app-http-interceptor.service";
-import {RouterModule} from "@angular/router";
 import {HomeComponent} from './home/home.component';
 import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
 import {AuthorizedComponent} from './authorized/authorized.component';
-import {AuthorizationGuard} from "./guard/authorization.guard";
+import {AppRoutingModule} from "./app.routing.module";
+import {LoginComponent} from './login/login.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AngularMaterialModule} from "./angular-material.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     UnauthorizedComponent,
-    AuthorizedComponent
+    AuthorizedComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     CommonModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      {path: '', redirectTo: 'home', pathMatch: 'full'},
-      {path: 'home', component: HomeComponent},
-      {path: 'authorized', component: AuthorizedComponent, canActivate: [AuthorizationGuard]},
-      {path: 'forbidden', component: UnauthorizedComponent},
-      {path: 'unauthorized', component: UnauthorizedComponent},
-    ]),
-    AuthConfigModule
+    AuthConfigModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AngularMaterialModule
   ],
   providers: [
     {

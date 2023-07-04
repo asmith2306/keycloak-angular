@@ -1,2 +1,13 @@
-<p>app component</p>
+<ng-container *ngIf="(authenticated | async) as authenticated">
+  <span *ngIf="authenticated.isAuthenticated" style="float: right">
+
+      <ng-container *ngIf="(userData | async) as userData">
+        <span *ngIf="userData.userData">User: {{userData.userData['preferred_username']}}</span>
+      </ng-container>
+      &nbsp;
+      <button (click)="logoffAndRevokeTokens()">Logout and revoke tokens</button>
+
+  </span>
+</ng-container>
+
 <router-outlet></router-outlet>

@@ -16,7 +16,7 @@ import {AuthModule, LogLevel} from 'angular-auth-oidc-client';
         useRefreshToken: true,
         autoCleanStateAfterAuthentication: false,
         historyCleanupOff: true,
-        logLevel: LogLevel.Debug,
+        logLevel: LogLevel.Warn,
         authWellknownEndpointUrl: 'http://localhost:8080/realms/my-realm/.well-known/openid-configuration'
       },
     }),

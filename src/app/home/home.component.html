@@ -1,31 +1,38 @@
-<div>Welcome to home Route</div>
+<form [formGroup]="messageFormGroup" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="content">Content:</label>
+    <input type="text" id="content" formControlName="content"/>
+  </div>
+  <div>
+    <label for="sender">Sender:</label>
+    <input type="text" id="sender" formControlName="sender"/>
+  </div>
+  <button type="submit" [disabled]="messageFormGroup.invalid">Save</button>
+</form>
 
-<div *ngIf="isAuthenticated; else noAuth">
-  <button (click)="logout()">Logout</button>
-  <button (click)="logoffAndRevokeTokens()">Logout and revoke tokens</button>
-  <button (click)="revokeAccessToken()">Revoke access token</button>
-  <button (click)="revokeRefreshToken()">Revoke refresh token</button>
-  <button (click)="refreshSession()">Refresh session</button>
-  <button (click)="getMessages()">Get messages</button>
-  <button (click)="getRoledMessages()">Get roled messages</button>
+<br/>
 
-  <hr />
+<pre>{{messageFormGroup.value | json}}</pre>
 
-  <br />
+<br/>
 
-  Is Authenticated: {{ isAuthenticated }}
+<br/>
 
-  <br />
-  userData
-  <pre>{{ userData$ | async | json }}</pre>
+<button (click)="getMessages()">Get messages</button>
 
-  <br />
-</div>
-
-<ng-template #noAuth>
-  <button (click)="login()">Login</button>
-  <hr />
-</ng-template>
-
-Configuration loaded:
-<pre>{{ configuration$ | async | json }}</pre>
+<table class="table-bordered">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Content</th>
+    <th>Sender</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let message of messages">
+    <td>{{ message.id }}</td>
+    <td>{{ message.content }}</td>
+    <td>{{ message.sender }}</td>
+  </tr>
+  </tbody>
+</table>
